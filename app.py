@@ -2,16 +2,32 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from wordcloud import WordCloud
-import nltk
-from nltk.corpus import stopwords
-import requests
-import plotly.express as px
-import numpy as np
-import zipfile
-import io
 
-nltk.download('stopwords')
+# Example: Read the Google Ads data
+# Replace 'google_ads_data.csv' with the actual file path
+data = pd.read_csv('google_ads_data.csv')
+
+# Required fields
+# Ensure your CSV has the following columns:
+# 'Search Term', 'Clicks', 'Impressions', 'Conversions', 'Cost', 'CTR', 'Year', 'Month'
+
+# Clean data
+if data.isnull().values.any():
+    data.dropna(inplace=True)
+
+# Aggregate metrics per year
+agg_columns = ['Clicks', 'Impressions', 'Conversions', 'Cost']
+
+# Pivot table for year comparison
+data['CTR'] = (data['Clicks'] / data['Impressions']) * 100
+data_summary = pd.pivot_table(
+    data, 
+    index='Search Term',
+    columns='Year',
+    values=agg_columns + ['CTR'],
+    aggfunc='mean'  
+}
+);
 
 
 # Function to load and preprocess data
